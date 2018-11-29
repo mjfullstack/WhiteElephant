@@ -1,2 +1,4 @@
-# Project2
-Christmas Budgeting App
+# White Christmas 
+
+## White Elephant Christmas Gift Exchange App
+#### UCSD Fullstack Bootcamp, Project2!
