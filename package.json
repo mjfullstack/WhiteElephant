@@ -1,0 +1,26 @@
+{
+  "name": "WhiteElephant",
+  "version": "1.0.0",
+  "description": "## White Elephant Christmas Gift Exchange App #### UCSD Fullstack Bootcamp, Project2!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mjfullstack/WhiteElephant.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mjfullstack/WhiteElephant/issues"
+  },
+  "homepage": "https://github.com/mjfullstack/WhiteElephant#readme",
+  "dependencies": {
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "mysql": "^2.16.0"
+  }
+}
