@@ -1,5 +1,5 @@
 {
-  "name": "WhiteElephant",
+  "name": "whiteelephant",
   "version": "1.0.0",
   "description": "## White Elephant Christmas Gift Exchange App #### UCSD Fullstack Bootcamp, Project2!",
   "main": "index.js",
@@ -21,6 +21,9 @@
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.4",
+    "path": "^0.12.7",
+    "sequelize": "^4.41.2"
   }
 }

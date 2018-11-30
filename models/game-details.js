@@ -5,14 +5,13 @@ var Sequelize = require("sequelize");
 var sequelize = require("../config/connection.js");
 
 // Game Details Model
-var gameDetails = sequelize.define("game_details", {
+var gameDetails = sequelize.define("game_detail_db", {
   game_name: Sequelize.STRING,
-  gift_dollar_max: Sequelize.INTEGER,
-  created_at: Sequelize.DATE
+  gift_dollar_max: Sequelize.INTEGER
 });
 
 // Syncs with DB
 gameDetails.sync();
 
 // Makes the Game Details Model available for other files (will also create a table)
-module.exports = Chirp;
+module.exports = gameDetails;
