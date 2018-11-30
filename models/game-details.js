@@ -15,3 +15,8 @@ gameDetails.sync();
 
 // Makes the Game Details Model available for other files (will also create a table)
 module.exports = gameDetails;
+
+// ===================================== //
+// = TEMP: ADDS MWJ ORM HOMEGROWN TEMP = //
+// ===================================== //
+
