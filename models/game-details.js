@@ -5,7 +5,7 @@ var Sequelize = require("sequelize");
 var sequelize = require("../config/connection.js");
 
 // Game Details Model
-var gameDetails = sequelize.define("game_detail_db", {
+var gameDetails = sequelize.define("game_details", {
   game_name: Sequelize.STRING,
   gift_dollar_max: Sequelize.INTEGER
 });
