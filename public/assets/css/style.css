@@ -1,0 +1,9 @@
+#main-area {
+    /* clear: both; */
+    width: 910px;
+    /* height: 400px; */
+    /* margin: 25px 15% 25px 33.3%; */
+    margin: 25px auto;
+    background-color: #ffffff;
+    padding: 25px;
+}
