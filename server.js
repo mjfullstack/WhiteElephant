@@ -2,6 +2,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var path = require('path');
+var gameDetails = require("./models/game-details.js")
 
 var app = express();
 var PORT = process.env.PORT || 3000;
@@ -31,7 +32,7 @@ app.set("view engine", "handlebars");
 
 // Required Server Files
 // var htmlRoutes = require("./routing/html-routes.js")(app);
-var apiRoutes = require("./controllers/burgers_controller.js")(app);
+// var apiRoutes = require("./controllers/burgers_controller.js")(app);
 
 
 // Start our server so that it can begin listening to client requests.
