@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+
+<style>
+body {
+  background-color: #2aa869;
+  color: white;
+}
+</style>
+
+<TITLE>White Elephant 3 draft </TITLE>
+<SCRIPT LANGUAGE="JavaScript">
+function readText (form) {
+    TestVar =form.inputbox.value;
+    alert ("You typed: " + TestVar);
+}
+
+function writeText (form) {
+    form.inputbox.value = "Have a nice day!"
+}
+</SCRIPT>
+</HEAD>
+<BODY>
+
+<form action="myform" method="get">
+   <fieldset>
+	<legend>Game Players and Gifts Information</legend>
+	<p>Players Name: <input type="text" name="Name" /></p>
+	<p>Purchase Amount: <input type="text" name="PurchAmt"</p>
+	<p>Gift Name: <input type="text" name="GiftName"</p>
+	<p>Gift Picture Link: <input type="text" name="GiftLink"</p>
+    </fieldset>
+	
+	<INPUT TYPE="button" NAME="button1" Value="Submit" onClick="writeText(this.form)">
+</form>
+
+
+</BODY>
+</HTML>
+

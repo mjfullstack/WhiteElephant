@@ -1,9 +1,27 @@
+body {
+    background-color: #06522c;
+    background: 
+    
+} 
+h1 {
+    color: green;
+}
+p {
+    color: green;
+}
+
 #main-area {
     /* clear: both; */
+    font-style: italic;
     width: 910px;
     /* height: 400px; */
     /* margin: 25px 15% 25px 33.3%; */
     margin: 25px auto;
-    background-color: #ffffff;
+    background-color: #d81919;
     padding: 25px;
+    
+}
+form {
+   color: green;
+   background:transparent;
 }
