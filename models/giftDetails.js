@@ -12,12 +12,14 @@ var connection = require("../config/connection.js");
 // Makes the Game Details Model available for other files (will also create a table)
 module.exports = function() {
   // Game Details Model
-  var gameDetails = connection.define("game_details", {
-    game_name: Sequelize.STRING,
-    gift_dollar_max: Sequelize.INTEGER
+  var giftDetails = connection.define("gift_details", {
+    gift_name: Sequelize.STRING,
+    gift_link: Sequelize.STRING,
+    gift_player_id: Sequelize.INTEGER,
+    player_state: Sequelize.STRING
   });
-  gameDetails.sync();
-  return gameDetails;
+  giftDetails.sync();
+  return giftDetails;
 };
 
 // ===================================== //

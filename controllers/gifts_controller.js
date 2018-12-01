@@ -33,6 +33,9 @@ module.exports = function(app) {
     console.log(db.game_details)
     console.log(db.gameDetails)
     // console.log(db.Game_Details);
+
+    //Code for posting / creating to DB
+    
     db.game_details.create({
       game_name: req.body.gameName,
       gift_dollar_max: req.body.dollarSpend
