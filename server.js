@@ -1,8 +1,12 @@
 // NPM Stuff...
+if(!process.env.PORT){
+  require('dotenv').config();
+}
+
 var express = require("express");
 var bodyParser = require("body-parser");
 var path = require('path');
-var gameDetails = require("./models/game-details.js")
+var gameDetails = require("./models/gameDetails.js")
 
 var app = express();
 var PORT = process.env.PORT || 3000;
