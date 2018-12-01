@@ -1,4 +1,4 @@
--- DB SCHMEA - Do Not Use - Created w/ Sequalize --
+-- DB SCHMEA - Do Not Use for Creating Tables - Created w/ Sequalize --
 
 drop database if exists white_elephant_db;
 
