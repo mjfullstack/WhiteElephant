@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>White Elephant Game Details</title>
+    <title>White Elephant Game - Gift Screen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Myerweb Reset -->
@@ -41,24 +41,28 @@
 
     <div id="main-area">
         <div class="jumbotron">
-            <h1 class="display-4">White Elephant Game</h1>
-            <p>Welcome to the White Elephant Game! We need a few particulars to get the game started, such as the
-                name of the game and how many shekels you want everyone to spend, but after that info you can
-                kick it off for everyone to submit their presents. Don't forget to play nice, and have fun!
-            </p>
+            <h1 class="display-4">White Elephant Game- Gift Details</h1>
+           
             <hr class="my-4">
             <form>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Game Name:</label>
-                    <input type="text" class="form-control" id="game-name">
+                    <label for="exampleInputEmail1">Game Player Name:</label>
+                    <input type="text" class="form-control" id="player-name">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Max $$$ Spend Per Player:</label>
-                    <input type="text" class="form-control" id="dollar-spend"><br>
+                    <label for="exampleInputEmail1">Gift Purchase Amount:</label>
+                    <input type="text" class="form-control" id="purchase-amount">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Gift Description:</label>
+                    <input type="text" class="form-control" id="gift-description">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Gift Link or Picture:</label>
+                    <input type="text" class="form-control" id="gift-picture">
                 </div>
             </form>
-            <button type="button" id="get-started"  class="btn btn-success float-right">Submit Presents</button>
-           
+            <button type="button" id="get-started" class="btn btn-success float-right">Start</button>
         </div>
     </div>
 

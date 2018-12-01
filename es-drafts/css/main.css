@@ -1,0 +1,32 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+.jumbotron {
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0);
+  padding-top: 5px;
+  margin-top: 40px;
+  margin-bottom: 0px;
+  height: 200px;
+  color: white;
+  text-shadow: black 0.3em 0.3em 0.3em;
+  background:transparent;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+	width: 35%;
+}
+
+.submit-button {
+  margin-top: 40px;
+}
+
+body {
+  background-color: #2aa869;
+  color: white;
+}
