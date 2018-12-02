@@ -40,47 +40,14 @@
   <!-- </header> -->
 
   <div id="main-area">
-    <div class="jumbotron">
-      <h1 class="display-4">White Elephant Game</h1>
-      <p>Welcome to the White Elephant Game! We need a few particulars to get the game started, such as the
-        name of the game and how many shekels you want everyone to spend, but after that info you can
-        kick it off for everyone to submit their presents. Don't forget to play nice, and have fun!
-      </p>
-      <hr class="my-4">
-      {{!-- <form>
-        <div class="form-group">
-          <label for="exampleInputEmail1">Game Name:</label>
-          <input type="text" class="form-control" id="game-name">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputEmail1">Max $$$ Spend Per Player:</label>
-          <input type="text" class="form-control" id="dollar-spend"><br>
-        </div>
-      </form> --}}
-      {{!-- <button type="button" id="get-started" class="btn btn-success float-right">Submit Presents</button> --}}
-      <form id="form1" method="POST" action="/gamespecs">
-        <!-- From Steve, HBS likes forms like this -->
-        <div class="form-group">
-          <label for="exampleInputEmail1">Game Name:</label>
-          <input type="text" class="form-control" id="game-name" name="gameName">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputEmail1">Max $$$ Spend Per Player:</label>
-          <input type="text" class="form-control" id="dollar-spend" name="dollarSpend"><br>
-        </div>
-      </form>
-      <button type="submit" form="form1" id="get-started" value="Submit" class="btn btn-secondary float-right">Submit
-        Presents</button>
-
+    {{!-- Jumbotron from views file --}}
+    <div id="gifts-area">
+      {{{body}}}
     </div>
   </div>
 
   <div id="players-area">
     {{!-- {{{body}}} THIS IDEA IS MORE REACT STYLE THAN HBS!!!--}}
-  </div>
-  <div id="gifts-area">
-    {{!-- {{{giftArea}}} --}}
-    {{{body}}}
   </div>
 
 

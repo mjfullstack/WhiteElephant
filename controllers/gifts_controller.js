@@ -15,12 +15,8 @@ module.exports = function(app) {
     console.log("app.GET/ in gifts_controller-routes just got hit!");
     // gameDetails.getAllGifts(req, res);
     console.log("req.body: ", req.body);
-    // var gameDetails = [{
-    //   "gameName"    : req.body.gameName,
-    //   "dollarSpend" : req.body.dollarSpend
-    // }];
+    // Object {} being passed to render for HANDLEBARS can work with it.
     res.render("home", {});
-    // Object being passed to render for HANDLEBARS can work with it.
   });
 
   // -------------------------
