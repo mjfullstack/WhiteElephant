@@ -14,6 +14,9 @@ module.exports = function(app) {
   app.get("/", function(req, res) {
     console.log("app.GET/ in gifts_controller-routes just got hit!");
     // gameDetails.getAllGifts(req, res);
+    console.log("req.body: ", req.body);
+    // Object {} being passed to render for HANDLEBARS can work with it.
+    res.render("home", {});
   });
 
   // -------------------------
@@ -30,8 +33,8 @@ module.exports = function(app) {
     console.log("app.POST in gifts_controller-routes.js got hit!");
     console.log("req.body: ", req.body);
     console.log("Hitting Post")
-    console.log(db.game_details)
-    console.log(db.gameDetails)
+    console.log("db.game_details: ",  db.game_details);
+    // console.log(db.gameDetails)
     // console.log(db.Game_Details);
 
     //Code for posting / creating to DB
@@ -40,19 +43,11 @@ module.exports = function(app) {
       game_name: req.body.gameName,
       gift_dollar_max: req.body.dollarSpend
     }).then(function(gameDetailsUpdate) {
-      console.log("DB Updated")
-      console.log(gameDetailsUpdate)
-      res.json(gameDetailsUpdate)
+      console.log("DB Updated");
+      // console.log("gameDetailsUpdate: ",  gameDetailsUpdate); // Object!
+      // Object being passed to render for HANDLEBARS can work with it.
+      res.render("single", gameDetailsUpdate.dataValues); // Works
     });
-
-    // var gameDetails = {
-    //   "gameName"    : req.body.gameName,
-    //   "dollarSpend" : req.body.dollarSpend
-    // };
-    // console.log("gameDetails.gameName: ", gameDetails.gameName);
-    // console.log("gameDetails.dollarSpend: ", gameDetails.dollarSpend);
-    // gameDetails.addNewGift(req, res);
-    // res.status(200).json(gameDetails).end("Server Saw It!");
   });
 };
 
