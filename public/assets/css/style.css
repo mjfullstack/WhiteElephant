@@ -1,11 +1,12 @@
 body {
     background-color: #06522c;
-    background: 
-    
+    /* background:  */
 } 
+
 h1 {
     color: green;
 }
+
 p {
     color: green;
 }
@@ -19,9 +20,14 @@ p {
     margin: 25px auto;
     background-color: #d81919;
     padding: 25px;
-    
 }
+    
 form {
    color: green;
    background:transparent;
+}
+
+#gifts-area {
+    color: red;
+    font-size: 15px;
 }
