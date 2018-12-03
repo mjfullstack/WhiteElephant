@@ -28,9 +28,9 @@ module.exports = function(app) {
     // gameDetails.updateGift(req, res);
   });
 
-  // C-r-u-d: CREATE
+  // C-r-u-d: CREATE Game Details
   app.post('/gamespecs', function(req, res) {
-    console.log("app.POST in gifts_controller-routes.js got hit!");
+    console.log("app.POST GAME-SPECS in gifts_controller-routes.js got hit!");
     console.log("req.body: ", req.body);
     console.log("Hitting Post")
     console.log("db.game_details: ",  db.game_details);
@@ -49,5 +49,29 @@ module.exports = function(app) {
       res.render("single", gameDetailsUpdate.dataValues); // Works
     });
   });
+
+  // C-r-u-d: CREATE Player Details
+  app.post('/playerspecs', function(req, res) {
+    console.log("app.POST PLAYER-SPECS in gifts_controller-routes.js got hit!");
+    console.log("req.body: ", req.body);
+    console.log("Hitting Post Players")
+    console.log("db.game_details: ",  db.player_details);
+    // console.log(db.gameDetails)
+    // console.log(db.Game_Details);
+
+    //Code for posting / creating to DB
+    
+    db.player_details.create({
+      player_name: req.body.playerName,
+      gift_id: req.body.giftDescription
+    }).then(function(playerDetailsUpdate) {
+      console.log("DB Updated");
+      // console.log("gameDetailsUpdate: ",  gameDetailsUpdate); // Object!
+      // Object being passed to render for HANDLEBARS can work with it.
+      res.render("single", gameDetailsUpdate.dataValues); // Works
+    });
+  });
+
+
 };
 
