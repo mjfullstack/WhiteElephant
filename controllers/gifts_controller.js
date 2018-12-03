@@ -7,6 +7,10 @@ var db = require("../models")
 console.log("FILE: gifts_controller.js ACTIVE");
 
 module.exports = function (app) {
+  
+  // Global Variables
+  var activePlayerNumber = 1;
+  
   // -------------------------
   // GET ROUTE
   // -------------------------
@@ -19,27 +23,62 @@ module.exports = function (app) {
     res.render("admin", {});
   });
 
-  app.get("/playgame", function(req, res) {
+  
+  
+  app.get("/playgame", function (req, res) {
     console.log("app.GET/playgame in gifts_controller-routes just got hit!");
     // gameDetails.getAllGifts(req, res);
     console.log("req.body: ", req.body);
     // Object {} being passed to render for HANDLEBARS can work with it.
 
+
+
+
+    // db.player_details.findAll({
+    //   // limit: 1,
+    //   where: {
+    //     id: activePlayerNumber
+    //   }
+    // }).then(function(activePlayer){
+    //   db.player_details.update({dataValues: "SELECTING"})
+    //   console.log("Active Player")
+    //   console.log(activePlayer)
+    //   activePlayerNumber++;
+    // })
+
     db.gift_details.findAll({
-    }).then(function(theGifts){
-      db.player_details.findAll({ 
-      }).then(function(thePlayers) {
-        console.log("in the game")
-        console.log("theGifts",  theGifts);
-        console.log("thePlayers",  thePlayers);
-  
-        res.render("playgame", {
-          listOfGifts: theGifts,
-          listOfPlayers: thePlayers});
+    }).then(function (theGifts) {
+      db.player_details.findAll({
+      }).then(function (thePlayers) {
+        db.player_details.update(
+          { player_state: "SELECTING" },
+          { where: { id: activePlayerNumber } }
+        ).then(function (activePlayerID) {
+          db.player_details.findAll({
+            where: {
+              player_state: "SELECTING"
+            }
+          }).then(function (activePlayer) {
+            activePlayerNumber++;
+            
+            console.log("in the game");
+            console.log("theGifts:", theGifts);
+            console.log("thePlayers:", thePlayers);
+            console.log("Active Player ID: ", activePlayerID);
+            console.log("Active Player:", activePlayer);
+            console.log("Active Player Number VAR: ", activePlayerNumber);
+
+            res.render("playgame", {
+              listOfGifts: theGifts,
+              listOfPlayers: thePlayers,
+              activePlayer: activePlayer
+            });
+          })
+        })
       })
     })
   });
-  
+
   // -------------------------
   // POST ROUTES
   // -------------------------
@@ -84,13 +123,14 @@ module.exports = function (app) {
 
     db.player_details.create({
       player_name: req.body.playerName,
-      player_pic: req.body.playerPic
+      player_pic: req.body.playerPic,
       // player_sequence: null,
       // player_gift_disallowed: null,
-      // player_state: null
+      player_state: "ENROLLED"
     }).then(db.gift_details.create({
       gift_name: req.body.giftName,
-      gift_pic: req.body.giftPic
+      gift_pic: req.body.giftPic,
+      gift_state: "WRAPPED"
     }))
 
     db.game_details.findAll({
@@ -99,7 +139,7 @@ module.exports = function (app) {
 
       },
       order: [['createdAt', 'DESC']]
-    }).then(function(theGame){
+    }).then(function (theGame) {
       console.log("in the game")
       console.log(theGame)
       res.render("players", theGame[0].dataValues)
