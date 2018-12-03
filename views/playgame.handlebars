@@ -5,41 +5,25 @@
       <h1 class="display-4">White Elephant Game</h1>
 
       <hr class="my-4">
-{{!--       
-      <form id="form1" method="POST" action="/playgame">
-        <!-- From Steve, HBS likes forms like this -->
-        <div class="form-group">
-          <label for="gamePlayerName">Player Name:</label>
-          <input type="text" class="form-control" id="player-name" name="playerName">
+      <div class="container">
+        <ul>
+          <div class="row">
+            {{#each listOfGifts}}
+              <div class="col-md-6">
+                {{!-- GIFTS --}}
+                <form id="form3" method="GET" action="/playgame"></form>
+                    <li>Gift Name: {{gift_name}}, Gift Pic:  {{gift_pic}}<button class="btn btn-success float-right"type="submit" form="form3" id="select-gift" data-value={{id}} id="a-select-gift-{{id}}">Select</button></li>
+              </div>
+            {{/each }}
+            {{#each listOfPlayers}}
+              <div class="col-md-6">
+                {{!-- PLAYERS --}}
+                <form id="form4" method="GET" action="/playgame"></form>
+                  <li>Player Name: {{player_name}}, Player Pic:  {{player_pic}}<button class="btn btn-danger float-right" type="submit" form="form4" id="steal-gift" data-value={{id}} id="a-steal-gift-{{id}}">STEAL</button></li>
+              </div>
+            {{/each }}
+          </div>
         </div>
-        <div class="form-group">
-          <label for="gamePlayerPic">Player URL Pic:</label>
-          <input type="text" class="form-control" id="player-pic" name="playerPic"><br>
-        </div>
-        <div class="form-group">
-          <label for="gameGiftName">Gift Name:</label>
-          <input type="text" class="form-control" id="gift-name" name="giftName"><br>
-        </div>
-        <div class="form-group">
-          <label for="gameGiftURL">Gift URL:</label>
-          <input type="text" class="form-control" id="gift-url" name="giftURL"><br>
-        </div>
-      </form>
- --}}
-      <form id="form3" method="GET" action="/playgame"></form>
-
-      {{!-- GIFTS --}}
-       <ul>
-        {{#each listOfGifts}}
-          <li>Gift Name: {{gift_name}}, Gift Pic:  {{gift_pic}}<button type="submit" form="form3" id="select-gift" data-value={{id}} id="a-want-gift-{{id}}">Select</button></li>
-        {{/each }}
-      </ul>
-
-      {{!-- PLAYERS --}}
-       <ul>
-        {{#each listOfPlayers}}
-          <li>Player Name: {{player_name}}, Player Pic:  {{player_pic}}<button type="submit" form="form3" id="select-gift" data-value={{id}} id="a-want-gift-{{id}}">STEAL</button></li>
-        {{/each }}
       </ul>
 
       <hr class="my-4">
