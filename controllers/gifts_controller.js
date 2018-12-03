@@ -19,7 +19,14 @@ module.exports = function(app) {
     res.render("admin", {});
   });
 
-  // -------------------------
+  app.get("/playgame", function(req, res) {
+    console.log("app.GET/playgame in gifts_controller-routes just got hit!");
+    // gameDetails.getAllGifts(req, res);
+    console.log("req.body: ", req.body);
+    // Object {} being passed to render for HANDLEBARS can work with it.
+    res.render("playgame", {listOfGifts: FINDALL});
+  });
+// -------------------------
   // POST ROUTES
   // -------------------------
   // c-r-U-d: UPDATE
