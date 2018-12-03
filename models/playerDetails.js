@@ -14,9 +14,9 @@ module.exports = function() {
   // Game Details Model
   var playerDetails = connection.define("player_details", {
     player_name: Sequelize.STRING,
-    player_photo: Sequelize.STRING,
+    player_pic: Sequelize.STRING,
     player_sequence: Sequelize.INTEGER,
-    player_gift_id: Sequelize.INTEGER,
+    // player_gift_id: Sequelize.INTEGER,
     player_gift_disallowed: Sequelize.INTEGER,
     player_state: Sequelize.STRING
   });

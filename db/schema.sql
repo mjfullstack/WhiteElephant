@@ -4,7 +4,7 @@ drop database if exists white_elephant_db;
 
 create database white_elephant_db;
 
-use white_elephant_db;
+-- use white_elephant_db;
 
 -- create table game_details_db (
 --     id int not null auto_increment,

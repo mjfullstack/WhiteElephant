@@ -16,7 +16,7 @@ module.exports = function(app) {
     // gameDetails.getAllGifts(req, res);
     console.log("req.body: ", req.body);
     // Object {} being passed to render for HANDLEBARS can work with it.
-    res.render("home", {});
+    res.render("admin", {});
   });
 
   // -------------------------
@@ -46,7 +46,7 @@ module.exports = function(app) {
       console.log("DB Updated");
       // console.log("gameDetailsUpdate: ",  gameDetailsUpdate); // Object!
       // Object being passed to render for HANDLEBARS can work with it.
-      res.render("single", gameDetailsUpdate.dataValues); // Works
+      res.render("players", gameDetailsUpdate.dataValues); // Works
     });
   });
 
@@ -55,7 +55,7 @@ module.exports = function(app) {
     console.log("app.POST PLAYER-SPECS in gifts_controller-routes.js got hit!");
     console.log("req.body: ", req.body);
     console.log("Hitting Post Players")
-    console.log("db.game_details: ",  db.player_details);
+    console.log("db.game_details: ",  db.player_details, db.gift_details);
     // console.log(db.gameDetails)
     // console.log(db.Game_Details);
 
@@ -63,15 +63,20 @@ module.exports = function(app) {
     
     db.player_details.create({
       player_name: req.body.playerName,
-      gift_id: req.body.giftDescription
-    }).then(function(playerDetailsUpdate) {
+      player_pic: req.body.playerPic
+      // player_sequence: null,
+      // player_gift_disallowed: null,
+      // player_state: null
+    }).then(db.gift_details.create({
+      gift_name: req.body.giftName,
+      gift_url: req.body.giftURL
+    })).then(function(playerDetailsUpdate) {
       console.log("DB Updated");
-      // console.log("gameDetailsUpdate: ",  gameDetailsUpdate); // Object!
-      // Object being passed to render for HANDLEBARS can work with it.
-      res.render("single", gameDetailsUpdate.dataValues); // Works
-    });
+      console.log("playerDetailsUpdate: ",  playerDetailsUpdate); // Object!
+    //   // Object being passed to render for HANDLEBARS can work with it.
+      // res.render("players", {listOfPlayers: playerDetailsUpdate.dataValues}); // Works
+      res.render("players"); // Works
+    })
   });
-
-
 };
 
