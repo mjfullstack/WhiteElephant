@@ -28,9 +28,17 @@
  --}}
       <form id="form3" method="GET" action="/playgame"></form>
 
+      {{!-- GIFTS --}}
        <ul>
         {{#each listOfGifts}}
-          <li>Gift Name: {{gift_name}}, Gift URL  {{gift_url}}<button type="submit" form="form3" id="select-gift" data-value={{id}} id="a-want-gift-{{id}}">Select</button></li>
+          <li>Gift Name: {{gift_name}}, Gift Pic:  {{gift_pic}}<button type="submit" form="form3" id="select-gift" data-value={{id}} id="a-want-gift-{{id}}">Select</button></li>
+        {{/each }}
+      </ul>
+
+      {{!-- PLAYERS --}}
+       <ul>
+        {{#each listOfPlayers}}
+          <li>Player Name: {{player_name}}, Player Pic:  {{player_pic}}<button type="submit" form="form3" id="select-gift" data-value={{id}} id="a-want-gift-{{id}}">STEAL</button></li>
         {{/each }}
       </ul>
 

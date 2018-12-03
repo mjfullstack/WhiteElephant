@@ -24,9 +24,23 @@ module.exports = function (app) {
     // gameDetails.getAllGifts(req, res);
     console.log("req.body: ", req.body);
     // Object {} being passed to render for HANDLEBARS can work with it.
-    res.render("playgame", {listOfGifts: FINDALL});
+
+    db.gift_details.findAll({
+    }).then(function(theGifts){
+      db.player_details.findAll({ 
+      }).then(function(thePlayers) {
+        console.log("in the game")
+        console.log("theGifts",  theGifts);
+        console.log("thePlayers",  thePlayers);
+  
+        res.render("playgame", {
+          listOfGifts: theGifts,
+          listOfPlayers: thePlayers});
+      })
+    })
   });
-// -------------------------
+  
+  // -------------------------
   // POST ROUTES
   // -------------------------
   // c-r-U-d: UPDATE
@@ -76,7 +90,7 @@ module.exports = function (app) {
       // player_state: null
     }).then(db.gift_details.create({
       gift_name: req.body.giftName,
-      gift_url: req.body.giftURL
+      gift_pic: req.body.giftPic
     }))
 
     db.game_details.findAll({
