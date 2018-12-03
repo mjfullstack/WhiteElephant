@@ -15,8 +15,8 @@ module.exports = function() {
   var giftDetails = connection.define("gift_details", {
     gift_name: Sequelize.STRING,
     gift_link: Sequelize.STRING,
-    gift_player_id: Sequelize.INTEGER,
-    player_state: Sequelize.STRING
+    // gift_player_id: Sequelize.INTEGER,
+    gift_state: Sequelize.STRING
   });
   giftDetails.sync();
   return giftDetails;
