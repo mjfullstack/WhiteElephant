@@ -9,7 +9,7 @@ console.log("FILE: gifts_controller.js ACTIVE");
 module.exports = function (app) {
   
   // Global Variables
-  var activePlayerNumber = 1;
+  var activePlayerNumber = 1; // Get /playgame route
   
   // -------------------------
   // GET ROUTE

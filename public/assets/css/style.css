@@ -14,7 +14,7 @@ p {
 #main-area {
     /* clear: both; */
     font-style: italic;
-    width: 910px;
+    width: 1000px;
     /* height: 400px; */
     /* margin: 25px 15% 25px 33.3%; */
     margin: 25px auto;
@@ -22,6 +22,14 @@ p {
     padding: 25px;
 }
     
+#steal-gift {
+    margin: 5px;
+}
+
+#select-gift {
+    margin: 5px;
+}
+
 form {
    color: green;
    background:transparent;

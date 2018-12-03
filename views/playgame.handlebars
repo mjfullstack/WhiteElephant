@@ -1,39 +1,56 @@
+<div class="jumbotron">
+  <h1 class="display-4">White Elephant Game</h1>
 
+  <hr class="my-4">
+  {{#each activePlayer}}
+  <h4>Player Name: {{player_name}}</h4>
+  
+  {{/each }}
+  <hr class="my-4">
+  <div class="container">
+    <ul>
+      <div class="row">
+        <div class="col-md-6">
 
-
-    <div class="jumbotron">
-      <h1 class="display-4">White Elephant Game</h1>
-
-      <hr class="my-4">
-      <div class="container">
-        <ul>
+          {{#each listOfGifts}}
           <div class="row">
-            {{#each listOfGifts}}
-              <div class="col-md-6">
-                {{!-- GIFTS --}}
-                <form id="form3" method="GET" action="/playgame"></form>
-                    <li>Gift Name: {{gift_name}}, Gift Pic:  {{gift_pic}}<button class="btn btn-success float-right"type="submit" form="form3" id="select-gift" data-value={{id}} id="a-select-gift-{{id}}">Select</button></li>
-              </div>
-            {{/each }}
-            {{#each listOfPlayers}}
-              <div class="col-md-6">
-                {{!-- PLAYERS --}}
-                <form id="form4" method="GET" action="/playgame"></form>
-                  <li>Player Name: {{player_name}}, Player Pic:  {{player_pic}}<button class="btn btn-danger float-right" type="submit" form="form4" id="steal-gift" data-value={{id}} id="a-steal-gift-{{id}}">STEAL</button></li>
-              </div>
-            {{/each }}
+            {{!-- GIFTS --}}
+            {{!-- <div class="col-md-6"></div> --}}
+            <form id="form3" method="GET" action="/playgame"></form>
+            <div class="col-md-8">
+              <li>Gift Name: {{gift_name}}, Gift Pic: {{gift_pic}}
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-success float-right" type="submit" form="form3" id="select-gift" data-value={{id}}
+                id="a-select-gift-{{id}}">Select</button></li>
+            </div>
           </div>
+          {{/each }}
         </div>
-      </ul>
+        <div class="col-md-6">
+          {{#each listOfPlayers}}
+          <div class="row">
 
-      <hr class="my-4">
+            {{!-- PLAYERS --}}
+            <form id="form4" method="GET" action="/playgame"></form>
+            <div class="col-md-8">
+              <li>Player Name: {{player_name}}, Player Pic: {{player_pic}}
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-danger float-right" type="submit" form="form4" id="steal-gift" data-value={{id}}
+                id="a-steal-gift-{{id}}">STEAL</button></li>
+            </div>
+          </div>
+          {{/each }}
+        </div>
+      </div>
+  </div>
+  </ul>
 
-      {{!-- <button type="submit" form="form2" id="get-started" value="Submit" class="btn btn-success float-right">Start Game</button> --}}
-      {{!-- <button type="submit" form="form1" id="enter-player" value="Submit" class="btn btn-danger float-right">Submit
-        Present</button> --}}
-    </div>
+  <hr class="my-4">
 
-
-
-
-
+  {{!-- <button type="submit" form="form2" id="get-started" value="Submit" class="btn btn-success float-right">Start
+    Game</button> --}}
+  {{!-- <button type="submit" form="form1" id="enter-player" value="Submit" class="btn btn-danger float-right">Submit
+    Present</button> --}}
+</div>
