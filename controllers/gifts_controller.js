@@ -83,9 +83,13 @@ module.exports = function (app) {
   // POST ROUTES
   // -------------------------
   // c-r-U-d: UPDATE
-  app.put('/devoured/:id', function (req, res) {
-    console.log("app.PUT in gifts_controller-routes.js got hit!");
+  app.post('/playgame', function (req, res) {
+    console.log("app.POST/:id in gifts_controller-routes.js got hit!");
+    console.log("req.params.id: ", req.params.id);
+    // console.log("this", this);
+    console.log("req.body", req.body);
     // gameDetails.updateGift(req, res);
+    res.render("playgame", {});
   });
 
   // C-r-u-d: CREATE Game Details

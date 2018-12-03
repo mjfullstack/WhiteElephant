@@ -16,14 +16,15 @@
           <div class="row">
             {{!-- GIFTS --}}
             {{!-- <div class="col-md-6"></div> --}}
-            <form id="form3" method="GET" action="/playgame"></form>
+            <form id="form3" method="POST" action="/playgame">
             <div class="col-md-8">
-              <li>Gift Name: {{gift_name}}, Gift Pic: {{gift_pic}}
+              <li>Gift Name: {{gift_name}}, Gift Pic: {{gift_pic}}, {{gift_state}}
             </div>
             <div class="col-md-4">
-              <button class="btn btn-success float-right" type="submit" form="form3" id="select-gift" data-value={{id}}
+              <button class="btn btn-success float-right" type="submit" name="GIFT_id" value={{id}} form="form3" id="select-gift" data-value={{id}}
                 id="a-select-gift-{{id}}">Select</button></li>
             </div>
+            </form>
           </div>
           {{/each }}
         </div>
@@ -32,7 +33,7 @@
           <div class="row">
 
             {{!-- PLAYERS --}}
-            <form id="form4" method="GET" action="/playgame"></form>
+            <form id="form4" method="GET" action="/playgame">
             <div class="col-md-8">
               <li>Player Name: {{player_name}}, Player Pic: {{player_pic}}
             </div>
@@ -40,6 +41,7 @@
               <button class="btn btn-danger float-right" type="submit" form="form4" id="steal-gift" data-value={{id}}
                 id="a-steal-gift-{{id}}">STEAL</button></li>
             </div>
+            </form>
           </div>
           {{/each }}
         </div>
