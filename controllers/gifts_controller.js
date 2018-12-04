@@ -25,99 +25,91 @@ module.exports = function (app) {
 
   app.post("/playgame/", function (req, res) {
     console.log("app.GET/playgame in gifts_controller-routes just got hit!");
-    // gameDetails.getAllGifts(req, res);
-    // console.log("req.body: ", req.body);
-    // Object {} being passed to render for HANDLEBARS can work with it.
 
-      // Update player state
+    // Update player state
 
-      // if (activePlayerNumber = 1) {
-      //   db.player_details.update(
-      //     { player_state: "SELECTING" },
-      //     { where: { id: activePlayerNumber } }
-      //   )
-      //   activePlayerNumber++;
-      // } else 
-      // if (activePlayerNumber > 1) {
-      
-      var previousPlayerNumber = activePlayerNumber - 1;
-      console.log("Active Player Number VAR: ", activePlayerNumber);
-      console.log("Active Player Number VAR: ", previousPlayerNumber);
+    var previousPlayerNumber = activePlayerNumber - 1;
+    console.log("Active Player Number VAR: ", activePlayerNumber);
+    console.log("Active Player Number VAR: ", previousPlayerNumber);
+    db.player_details.update(
+      { player_state: "SELECTING" },
+      { where: { id: activePlayerNumber } }
+    ).then(function (activePlayerID) {
+      console.log("Active Player ID: ", activePlayerID);
+      activePlayerNumber++;
       db.player_details.update(
-        { player_state: "SELECTING" },
-        { where: { id: activePlayerNumber } }
-      ).then(function (activePlayerID) {
-        console.log("Active Player ID: ", activePlayerID);
-        db.player_details.update(
-          { player_state: "DONE" },
-          { where: { id: previousPlayerNumber } }
-        )
-        activePlayerNumber++;
-      })
+        { player_state: "DONE" },
+        { where: { id: previousPlayerNumber } }
+      ).then(function () {
+        // Update gift state
+        if (req.body.gift_id !== undefined && req.body.gift_id !== null) {
+          var giftID = Number(req.body.gift_id);
+          // console.log(playerID)
+
+          db.gift_details.findAll({
+            where: { id: giftID }
+          }).then(function (theGifts) {
+            // console.log(theGifts);
+            // console.log(theGifts[0].gift_state);
+
+            switch (theGifts[0].gift_state) {
+              case "WRAPPED":
+                db.gift_details.update(
+                  { gift_state: "UNWRAPPED" },
+                  { where: { id: giftID } }
+                );
+                break;
+              case "UNWRAPPED":
+                db.gift_details.update(
+                  { gift_state: "STOLEN" },
+                  { where: { id: giftID } }
+                );
+                break;
+              case "STOLEN":
+                db.gift_details.update(
+                  { gift_state: "DEAD" },
+                  { where: { id: giftID } }
+                );
+                break;
+              default:
+                break;
+            }
+          }).then(function() {
+            // Get game details
+            db.gift_details.findAll({
+            }).then(function (theGifts) {
+              db.player_details.findAll({
+              }).then(function (thePlayers) {
+                db.player_details.findAll({
+                  where: {
+                    player_state: "SELECTING"
+                  }
+                }).then(function (activePlayer) {
+                  // activePlayerNumber++;
+
+                  // console.log("in the game");
+                  // console.log("theGifts:", theGifts);
+                  // console.log("thePlayers:", thePlayers);
+                  // console.log("Active Player:", activePlayer);
+
+
+                  res.render("playgame", {
+                    listOfGifts: theGifts,
+                    listOfPlayers: thePlayers,
+                    activePlayer: activePlayer
+                  });
+                })
+              })
+            })
+          })
+        };
+      });
+    });
     // };
 
-    // Update gift state
-    if (req.body.gift_id !== undefined && req.body.gift_id !== null) {
-      var giftID = Number(req.body.gift_id);
-      // console.log(playerID)
-
-      db.gift_details.findAll({
-        where: { id: giftID }
-      }).then(function (theGifts) {
-        // console.log(theGifts);
-        // console.log(theGifts[0].gift_state);
-
-        switch (theGifts[0].gift_state) {
-          case "WRAPPED":
-            db.gift_details.update(
-              { gift_state: "UNWRAPPED" },
-              { where: { id: giftID } }
-            );
-            break;
-          case "UNWRAPPED":
-            db.gift_details.update(
-              { gift_state: "STOLEN" },
-              { where: { id: giftID } }
-            );
-            break;
-          case "STOLEN":
-            db.gift_details.update(
-              { gift_state: "DEAD" },
-              { where: { id: giftID } }
-            );
-            break;
-          default:
-            break;
-        }
-      })
-    };
-
-    // Get game details
-    db.gift_details.findAll({
-    }).then(function (theGifts) {
-      db.player_details.findAll({
-      }).then(function (thePlayers) {
-        db.player_details.findAll({
-          where: {
-            player_state: "SELECTING"
-          }
-        }).then(function (activePlayer) {
-          // activePlayerNumber++;
-
-          // console.log("in the game");
-          // console.log("theGifts:", theGifts);
-          // console.log("thePlayers:", thePlayers);
-          // console.log("Active Player:", activePlayer);
 
 
-          res.render("playgame", {
-            listOfGifts: theGifts,
-            listOfPlayers: thePlayers,
-            activePlayer: activePlayer
-          });
-        })
-      })
-    })
+
     // res.render("playgame", {})
   });
 
@@ -126,7 +118,7 @@ module.exports = function (app) {
   // -------------------------
   // c-R-u-d: READ
   app.get('/playgame', function (req, res) {
-    
+
     // Initiate Active Player
     if (activePlayerNumber = 1) {
       db.player_details.update(
@@ -136,7 +128,7 @@ module.exports = function (app) {
       activePlayerNumber++;
     }
     console.log("Active Player Number: ", activePlayerNumber);
-    
+
     // Gather data to display to page
     db.gift_details.findAll({
     }).then(function (theGifts) {
