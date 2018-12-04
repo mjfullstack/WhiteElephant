@@ -3,6 +3,9 @@ var express = require("express");
 // var Game_Details = require("../models/game-details.js")()
 var db = require("../models")
 // var orm = require("../config/orm.js");
+// As always, we grab the fs package to handle read/write.
+var fs = require("fs");
+
 
 console.log("FILE: gifts_controller.js ACTIVE");
 
@@ -247,27 +250,34 @@ module.exports = function (app) {
 
     db.player_details.create({
       player_name: req.body.playerName,
-      player_pic: req.body.playerPic,
+      // player_pic: req.body.playerPic,
+      // player_pic: '<img class="player-pic" src=' + req.body.playerPic+ 'alt="Player Pic">' ,
+      player_pic: 'src=' + req.body.playerPic,
       // player_sequence: null,
       // player_gift_disallowed: null,
       player_state: "ENROLLED"
     }).then(db.gift_details.create({
       gift_name: req.body.giftName,
-      gift_pic: req.body.giftPic,
+      // gift_pic: req.body.giftPic,
+      // gift_pic: '<img class="gift-pic" src=' + req.body.giftPic + 'alt="Gift Pic">' ,
+      gift_pic: 'src=' + req.body.giftPic,
       gift_state: "WRAPPED"
-    }))
+      }).then(db.game_details.findAll({
+        limit: 1,
+        where: {
+        },
+        order: [['createdAt', 'DESC']]
+        }).then(function (theGame) {
+          // console.log("in the game")
+          // console.log(theGame)
+          res.render("players", theGame[0].dataValues)
+        })
+      )
+    )
+  })
 
-    db.game_details.findAll({
-      limit: 1,
-      where: {
-
-      },
-      order: [['createdAt', 'DESC']]
-    }).then(function (theGame) {
-      // console.log("in the game")
-      // console.log(theGame)
-      res.render("players", theGame[0].dataValues)
-    })
-
+  app.get("/public/assets/img/:file", function(req, res) {
+    var pic2get = req.params.file;
+    console.log("pic2get: ", pic2get);
   })
 }
