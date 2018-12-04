@@ -7,10 +7,10 @@ var db = require("../models")
 console.log("FILE: gifts_controller.js ACTIVE");
 
 module.exports = function (app) {
-  
+
   // Global Variables
   var activePlayerNumber = 1; // Get /playgame route
-  
+
   // -------------------------
   // GET ROUTE
   // -------------------------
@@ -23,73 +23,146 @@ module.exports = function (app) {
     res.render("admin", {});
   });
 
-  
-  
-  app.get("/playgame", function (req, res) {
+  app.post("/playgame/", function (req, res) {
     console.log("app.GET/playgame in gifts_controller-routes just got hit!");
     // gameDetails.getAllGifts(req, res);
-    console.log("req.body: ", req.body);
+    // console.log("req.body: ", req.body);
     // Object {} being passed to render for HANDLEBARS can work with it.
 
+      // Update player state
 
+      // if (activePlayerNumber = 1) {
+      //   db.player_details.update(
+      //     { player_state: "SELECTING" },
+      //     { where: { id: activePlayerNumber } }
+      //   )
+      //   activePlayerNumber++;
+      // } else 
+      // if (activePlayerNumber > 1) {
+      
+      var previousPlayerNumber = activePlayerNumber - 1;
+      console.log("Active Player Number VAR: ", activePlayerNumber);
+      console.log("Active Player Number VAR: ", previousPlayerNumber);
+      db.player_details.update(
+        { player_state: "SELECTING" },
+        { where: { id: activePlayerNumber } }
+      ).then(function (activePlayerID) {
+        console.log("Active Player ID: ", activePlayerID);
+        db.player_details.update(
+          { player_state: "DONE" },
+          { where: { id: previousPlayerNumber } }
+        )
+        activePlayerNumber++;
+      })
+    // };
 
+    // Update gift state
+    if (req.body.gift_id !== undefined && req.body.gift_id !== null) {
+      var giftID = Number(req.body.gift_id);
+      // console.log(playerID)
 
-    // db.player_details.findAll({
-    //   // limit: 1,
-    //   where: {
-    //     id: activePlayerNumber
-    //   }
-    // }).then(function(activePlayer){
-    //   db.player_details.update({dataValues: "SELECTING"})
-    //   console.log("Active Player")
-    //   console.log(activePlayer)
-    //   activePlayerNumber++;
-    // })
+      db.gift_details.findAll({
+        where: { id: giftID }
+      }).then(function (theGifts) {
+        // console.log(theGifts);
+        // console.log(theGifts[0].gift_state);
 
+        switch (theGifts[0].gift_state) {
+          case "WRAPPED":
+            db.gift_details.update(
+              { gift_state: "UNWRAPPED" },
+              { where: { id: giftID } }
+            );
+            break;
+          case "UNWRAPPED":
+            db.gift_details.update(
+              { gift_state: "STOLEN" },
+              { where: { id: giftID } }
+            );
+            break;
+          case "STOLEN":
+            db.gift_details.update(
+              { gift_state: "DEAD" },
+              { where: { id: giftID } }
+            );
+            break;
+          default:
+            break;
+        }
+      })
+    };
+
+    // Get game details
     db.gift_details.findAll({
     }).then(function (theGifts) {
       db.player_details.findAll({
       }).then(function (thePlayers) {
-        db.player_details.update(
-          { player_state: "SELECTING" },
-          { where: { id: activePlayerNumber } }
-        ).then(function (activePlayerID) {
-          db.player_details.findAll({
-            where: {
-              player_state: "SELECTING"
-            }
-          }).then(function (activePlayer) {
-            activePlayerNumber++;
-            
-            console.log("in the game");
-            console.log("theGifts:", theGifts);
-            console.log("thePlayers:", thePlayers);
-            console.log("Active Player ID: ", activePlayerID);
-            console.log("Active Player:", activePlayer);
-            console.log("Active Player Number VAR: ", activePlayerNumber);
+        db.player_details.findAll({
+          where: {
+            player_state: "SELECTING"
+          }
+        }).then(function (activePlayer) {
+          // activePlayerNumber++;
 
-            res.render("playgame", {
-              listOfGifts: theGifts,
-              listOfPlayers: thePlayers,
-              activePlayer: activePlayer
-            });
-          })
+          // console.log("in the game");
+          // console.log("theGifts:", theGifts);
+          // console.log("thePlayers:", thePlayers);
+          // console.log("Active Player:", activePlayer);
+
+
+          res.render("playgame", {
+            listOfGifts: theGifts,
+            listOfPlayers: thePlayers,
+            activePlayer: activePlayer
+          });
         })
       })
     })
+    // res.render("playgame", {})
   });
 
   // -------------------------
   // POST ROUTES
   // -------------------------
-  // c-r-U-d: UPDATE
-  app.post('/playgame', function (req, res) {
-    console.log("app.POST/:id in gifts_controller-routes.js got hit!");
-    console.log("req.params.id: ", req.params.id);
-    // console.log("this", this);
-    console.log("req.body", req.body);
-    // gameDetails.updateGift(req, res);
-    res.render("playgame", {});
+  // c-R-u-d: READ
+  app.get('/playgame', function (req, res) {
+    
+    // Initiate Active Player
+    if (activePlayerNumber = 1) {
+      db.player_details.update(
+        { player_state: "SELECTING" },
+        { where: { id: activePlayerNumber } }
+      )
+      activePlayerNumber++;
+    }
+    console.log("Active Player Number: ", activePlayerNumber);
+    
+    // Gather data to display to page
+    db.gift_details.findAll({
+    }).then(function (theGifts) {
+      db.player_details.findAll({
+      }).then(function (thePlayers) {
+        db.player_details.findAll({
+          where: {
+            player_state: "SELECTING"
+          }
+        }).then(function (activePlayer) {
+          // activePlayerNumber++;
+
+          // console.log("in the game");
+          // console.log("theGifts:", theGifts);
+          // console.log("thePlayers:", thePlayers);
+          // console.log("Active Player:", activePlayer);
+
+
+          res.render("playgame", {
+            listOfGifts: theGifts,
+            listOfPlayers: thePlayers,
+            activePlayer: activePlayer
+          });
+        })
+      })
+    })
   });
 
   // C-r-u-d: CREATE Game Details
@@ -144,8 +217,8 @@ module.exports = function (app) {
       },
       order: [['createdAt', 'DESC']]
     }).then(function (theGame) {
-      console.log("in the game")
-      console.log(theGame)
+      // console.log("in the game")
+      // console.log(theGame)
       res.render("players", theGame[0].dataValues)
     })
 
