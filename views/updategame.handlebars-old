@@ -11,7 +11,7 @@
     <ul>
       <div class="row">
         <div class="col-md-6">
-          <form id="form3" method="POST" action="/playgame"></form>
+          <form id="form3" method="POST" action="/playgame/updategame"></form>
           {{#each listOfGifts}}
           <div class="row">
             {{!-- GIFTS --}}
@@ -36,13 +36,13 @@
 
             {{!-- PLAYERS --}}
 
-            <div class="col-md-12">
-              <li>Sequence: {{id}}, Player Name: {{player_name}}, Player Pic: {{player_pic}}, {{player_state}}
+            <div class="col-md-8">
+              <li>Player Name: {{player_name}}, Player Pic: {{player_pic}}
             </div>
-            {{!-- <div class="col-md-4"> --}}
-              {{!-- <button class="btn btn-danger float-right" type="submit" form="form4" id="steal-gift" data-value="" --}}
-                {{!-- id="a-steal-gift-{{id}}">STEAL</button></li> --
-            {{!-- </div> --}}
+            <div class="col-md-4">
+              <button class="btn btn-danger float-right" type="submit" form="form4" id="steal-gift" data-value={{id}}
+                id="a-steal-gift-{{id}}">STEAL</button></li>
+            </div>
 
           </div>
           {{/each }}
