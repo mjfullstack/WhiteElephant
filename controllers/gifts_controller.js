@@ -27,122 +27,146 @@ module.exports = function (app) {
     console.log("app.GET/playgame in gifts_controller-routes just got hit!");
 
     var giftID = Number(req.body.gift_id);
+    var nextPlayerNumber = activePlayerNumber + 1;
     var previousPlayerNumber = activePlayerNumber - 1;
+    var stolenPlayerNumber = previousPlayerNumber - 1;
+    console.log("Active Player Number: ", activePlayerNumber);
+    console.log("Previous Player Number: ", previousPlayerNumber);
+    console.log("Active Player Number: ", stolenPlayerNumber);
+    var globalGiftState = [];
 
-    // db.gift_details.findAll({
-    //   where: { id: giftID }
-    // }).then(function (theGiftsState) {
-      // console.log(theGifts);
-      // console.log(theGifts[0].gift_state);
-    //   if (theGiftsState[0].gift_state === "UNWRAPPED" || theGiftsState[0].gift_state === "STOLEN") {
-    //     db.player_details.update(
-    //       { player_state: "SELECTING" },
-    //       { where: { id: activePlayerNumber } }
-    //     ).then(function (activePlayerID) {
-    //       console.log("Active Player ID: ", activePlayerID);
-    //       activePlayerNumber++;
-    //       db.player_details.update(
-    //         { player_state: "SELECTING" },
-    //         { where: { id: previousPlayerNumber } }
-    //       )
-    //   } 
+    db.gift_details.findAll({
+      where: { id: giftID }
+    }).then(function (theGiftsState) {
 
-    // console.log("Active Player Number VAR: ", activePlayerNumber);
-    // console.log("Active Player Number VAR: ", previousPlayerNumber);
-    
-    // db.gift_details.findAll({
+      // Set gift state to next status
 
-    // })
-    
-    db.player_details.update(
-      { player_state: "SELECTING" },
-      { where: { id: activePlayerNumber } }
-    ).then(function (activePlayerID) {
-      console.log("Active Player ID: ", activePlayerID);
-      activePlayerNumber++;
-      db.player_details.update(
-        { player_state: "DONE" },
-        { where: { id: previousPlayerNumber } }
-      ).then(function () {
-        // Update gift state
-        // if (req.body.gift_id !== undefined && req.body.gift_id !== null) {
+      console.log("Setting gift state.");
+      globalGiftState = theGiftsState;
+      switch (globalGiftState[0].gift_state) {
+        case "WRAPPED":
+          return db.gift_details.update(
+            {
+              gift_state: "UNWRAPPED",
+              gift_player_id: activePlayerNumber
+            },
+            { where: { id: giftID } }
+          );
+          break;
+        case "UNWRAPPED":
+          return db.gift_details.update(
+            {
+              gift_state: "STOLEN",
+              gift_player_id: activePlayerNumber
+            },
+            { where: { id: giftID } }
+          );
+          break;
+        case "STOLEN":
+          return db.gift_details.update(
+            {
+              gift_state: "DEAD",
+              gift_player_id: activePlayerNumber
+            },
+            { where: { id: giftID } }
+          );
+          break;
+        default:
+          console.log('default case ');
+          break;
+      }
+    }).then(function () {
+      return db.gift_details.findAll({
+        where: { id: giftID }
+      })
+    }).then(function (theGiftsState) {
+      
+      // Set Player State when gifts are STOLEN or DEAD
+      
+      globalGiftState = theGiftsState;
+      console.log("Global Gift State: ", globalGiftState[0].gift_state);
+      console.log("Current Gift State: ", theGiftsState[0].gift_state);
+      
+      console.log("Set player state when gifts are Stolen or Dead.")
+      console.log("Global gift state: ", globalGiftState[0].gift_state)
+      if (globalGiftState[0].gift_state === "STOLEN" || globalGiftState[0].gift_state === "DEAD") {
+        return db.player_details.update(
+          { player_state: "SELECTING" },
+          { where: { id: previousPlayerNumber } }
+        ).then(function (activePlayerID) {
+          console.log("Active Player ID: ", activePlayerID);
+          // activePlayerNumber++;
+          return db.player_details.update(
+            { player_state: "DONE" },
+            { where: { id: activePlayerNumber } }
+          )
+          activePlayerNumber++
+        })
+      }
+    }).then(function () {
 
-        db.gift_details.findAll({
-          where: { id: giftID }
-        }).then(function (theGiftsState) {
-          // console.log(theGifts);
-          // console.log(theGifts[0].gift_state);
+      // Set Player state when gifts are UNWRAPPED
+      console.log("Set player state when gifts are UNWRAPPED.")
+      console.log("Global gift state: ", globalGiftState[0].gift_state);
 
-          switch (theGiftsState[0].gift_state) {
-            case "WRAPPED":
-              return db.gift_details.update(
-                {
-                  gift_state: "UNWRAPPED",
-                  gift_player_id: previousPlayerNumber
-                },
-                { where: { id: giftID } }
-              );
-              break;
-            case "UNWRAPPED":
-              return db.gift_details.update(
-                {
-                  gift_state: "STOLEN",
-                  gift_player_id: previousPlayerNumber
-                },
-                { where: { id: giftID } }
-              );
-              break;
-            case "STOLEN":
-              return db.gift_details.update(
-                {
-                  gift_state: "DEAD",
-                  gift_player_id: previousPlayerNumber
-                },
-                { where: { id: giftID } }
-              );
-              break;
-            default:
-              break;
-          }
-        }).then(function () {
-          // Get game details
-          db.gift_details.findAll({
-          }).then(function (theGifts) {
-            db.player_details.findAll({
-            }).then(function (thePlayers) {
-              db.player_details.findAll({
-                where: {
-                  player_state: "SELECTING"
-                }
-              }).then(function (activePlayer) {
-                // activePlayerNumber++;
+      if (globalGiftState[0].gift_state === "UNWRAPPED") {
+        return db.player_details.update(
+          { player_state: "DONE" },
+          { where: { id: activePlayerNumber } }
+        ).then(function (activePlayerID) {
+          console.log("Active Player ID: ", activePlayerID);
+          // activePlayerNumber++;
+          db.player_details.update(
+            { player_state: "SELECTING" },
+            { where: { id: nextPlayerNumber } }
+          )
+          activePlayerNumber++;
+        })
+      }
+    }).then(function () {
 
-                // console.log("in the game");
-                // console.log("theGifts:", theGifts);
-                // console.log("thePlayers:", thePlayers);
-                // console.log("Active Player:", activePlayer);
+      // Get game details
+
+      console.log("Get game details for res.render Playgame page")
+
+      db.gift_details.findAll({
+      }).then(function (theGifts) {
+        db.player_details.findAll({
+        }).then(function (thePlayers) {
+          db.player_details.findAll({
+            where: {
+              player_state: "SELECTING"
+            }
+          }).then(function (activePlayer) {
+            // activePlayerNumber++;
+            console.log("Active Player Number after Get Play Game: ", activePlayerNumber)
+
+            // console.log("in the game");
+            // console.log("theGifts:", theGifts);
+            // console.log("thePlayers:", thePlayers);
+            // console.log("Active Player:", activePlayer);
 
 
-                res.render("playgame", {
-                  listOfGifts: theGifts,
-                  listOfPlayers: thePlayers,
-                  activePlayer: activePlayer
-                });
-              })
-            })
+            res.render("playgame", {
+              listOfGifts: theGifts,
+              listOfPlayers: thePlayers,
+              activePlayer: activePlayer
+            });
           })
         })
-        // };
-
-      });
-    });
+      })
+    })
     // };
 
 
+  })
+
+  // };
 
 
-    // res.render("playgame", {})
-  });
+
+
+  // res.render("playgame", {})
 
   // -------------------------
   // POST ROUTES
@@ -156,7 +180,7 @@ module.exports = function (app) {
         { player_state: "SELECTING" },
         { where: { id: activePlayerNumber } }
       )
-      activePlayerNumber++;
+      // activePlayerNumber++;
     }
     console.log("Active Player Number: ", activePlayerNumber);
 
