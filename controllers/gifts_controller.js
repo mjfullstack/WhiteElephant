@@ -42,31 +42,30 @@ module.exports = function (app) {
         { where: { id: previousPlayerNumber } }
       ).then(function () {
         // Update gift state
-        if (req.body.gift_id !== undefined && req.body.gift_id !== null) {
+        // if (req.body.gift_id !== undefined && req.body.gift_id !== null) {
           var giftID = Number(req.body.gift_id);
-          // console.log(playerID)
 
           db.gift_details.findAll({
             where: { id: giftID }
-          }).then(function (theGifts) {
+          }).then(function (theGiftsState) {
             // console.log(theGifts);
             // console.log(theGifts[0].gift_state);
 
-            switch (theGifts[0].gift_state) {
+            switch (theGiftsState[0].gift_state) {
               case "WRAPPED":
-                db.gift_details.update(
+                return db.gift_details.update(
                   { gift_state: "UNWRAPPED" },
                   { where: { id: giftID } }
                 );
                 break;
               case "UNWRAPPED":
-                db.gift_details.update(
+                return db.gift_details.update(
                   { gift_state: "STOLEN" },
                   { where: { id: giftID } }
                 );
                 break;
               case "STOLEN":
-                db.gift_details.update(
+                return db.gift_details.update(
                   { gift_state: "DEAD" },
                   { where: { id: giftID } }
                 );
@@ -102,7 +101,8 @@ module.exports = function (app) {
               })
             })
           })
-        };
+        // };
+          
       });
     });
     // };
