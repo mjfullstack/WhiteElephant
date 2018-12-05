@@ -68,7 +68,7 @@ module.exports = function (app) {
           break;
         case "UNWRAPPED":
           // This was a steal, MWJstolen... S/B NOT null
-          if ( MWJstolenFromPlayer) {nextPlayerNumber = MWJstolenFromPlayer};
+          if (MWJstolenFromPlayer) { nextPlayerNumber = MWJstolenFromPlayer };
           return db.gift_details.update(
             {
               gift_state: "STOLEN",
@@ -79,7 +79,7 @@ module.exports = function (app) {
           break;
         case "STOLEN":
           // This was a steal, MWJstolen... S/B NOT null
-          if ( MWJstolenFromPlayer) {nextPlayerNumber = MWJstolenFromPlayer};
+          if (MWJstolenFromPlayer) { nextPlayerNumber = MWJstolenFromPlayer };
           return db.gift_details.update(
             {
               gift_state: "DEAD",
@@ -92,18 +92,20 @@ module.exports = function (app) {
           console.log('ERROR: default case in ---> globalGiftState[0].gift_state <---');
           break;
       }
-    }.then(function () { // remove closing ) of previous then
+    }).then(function () { // remove closing ) of previous then
       return db.gift_details.findAll({
         where: { id: giftID }
       })
-    }.then(function (theGiftsState) {  // remove closing ) of previous then
-      
+    }).then(function (theGiftsState) {  // remove closing ) of previous then
+
       // Set Player State when gifts are STOLEN or DEAD
-      
+
+      // Works if you steal from previous person, but does not work if you steal from another person
+      // Sequence then breaks as well for user Selecting, doesn't reconize DONE
       globalGiftState = theGiftsState;
       console.log("Global Gift State: ", globalGiftState[0].gift_state); // Prior State
       console.log("Current Gift State: ", theGiftsState[0].gift_state);
-      
+
       console.log("Set player state when gifts are Stolen or Dead.")
       console.log("Global gift state: ", globalGiftState[0].gift_state)
       if (globalGiftState[0].gift_state === "STOLEN" || globalGiftState[0].gift_state === "DEAD") {
@@ -120,8 +122,10 @@ module.exports = function (app) {
           )
           activePlayerNumber++; // Unreachable Code via above return statement
         })
-      } // end of IF (globalGiftState[0].gift_state === "STOLEN" || globalGiftState[0].gift_state === "DEAD")
-    }.then(function () {  // remove closing ) of previous then
+      } else {
+        return;
+      }// end of IF (globalGiftState[0].gift_state === "STOLEN" || globalGiftState[0].gift_state === "DEAD")
+    }).then(function () {  // remove closing ) of previous then
 
       // Set Player state when gifts are UNWRAPPED
       console.log("Set player state when gifts are UNWRAPPED.")
@@ -134,15 +138,19 @@ module.exports = function (app) {
         ).then(function (activePlayerID) {
           console.log("Active Player ID: ", activePlayerID);
           // activePlayerNumber++;
-          db.player_details.update( // 
+          return db.player_details.update( // 
             { player_state: "SELECTING" },
             { where: { id: nextPlayerNumber } }
           )
           // activePlayerNumber++; // Correct, but only if NOT stolen 
           // activePlayerNumber = nextPlayerNumber; // Correct, for either case as determined and set accordingly above. 
-        // })  // remove closing }) of previous then
-      // }
-    .then(function () { // remove closing }) of previous then
+          // })  // remove closing }) of previous then
+          // }
+        })
+      } else {
+        return
+      }
+    }).then(function () { // remove closing }) of previous then
       activePlayerNumber = nextPlayerNumber; // Correct, for either case as determined and set accordingly above. 
 
       // Get game details
@@ -175,11 +183,10 @@ module.exports = function (app) {
         });
       });
     })
-    })
-  } // end of IF(globalGiftState[0].gift_state === "UNWRAPPED")
-})
-)))
-}) // end of app.post("/playgame")
+  })
+  // end of IF(globalGiftState[0].gift_state === "UNWRAPPED")
+
+  // end of app.post("/playgame")
 
 
   // -------------------------
@@ -222,7 +229,8 @@ module.exports = function (app) {
         })
       })
     })
-  });
+  })
+
 
   // C-r-u-d: CREATE Game Details
   app.post('/gamespecs', function (req, res) {
@@ -271,21 +279,21 @@ module.exports = function (app) {
       // gift_pic: '<img class="gift-pic" src=' + req.body.giftPic + 'alt="Gift Pic">' ,
       gift_pic: 'src=' + req.body.giftPic,
       gift_state: "WRAPPED"
-      }).then(db.game_details.findAll({
-        limit: 1,
-        where: {
-        },
-        order: [['createdAt', 'DESC']]
-        }).then(function (theGame) {
-          // console.log("in the game")
-          // console.log(theGame)
-          res.render("players", theGame[0].dataValues)
-        })
-      )
+    }).then(db.game_details.findAll({
+      limit: 1,
+      where: {
+      },
+      order: [['createdAt', 'DESC']]
+    }).then(function (theGame) {
+      // console.log("in the game")
+      // console.log(theGame)
+      res.render("players", theGame[0].dataValues)
+    })
+    )
     )
   })
 
-  app.get("/public/assets/img/:file", function(req, res) {
+  app.get("/public/assets/img/:file", function (req, res) {
     var pic2get = req.params.file;
     console.log("pic2get: ", pic2get);
   })
